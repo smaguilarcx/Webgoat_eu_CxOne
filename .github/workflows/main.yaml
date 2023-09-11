@@ -1,0 +1,28 @@
+name: Checkmarx One Scan
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkmarx One CLI Action
+        uses: checkmarx/ast-github-action@main #Github Action version
+        with:
+          project_name:  ${{ github.repository }}
+          cx_tenant: ${{ secrets.TENANT }}
+          base_uri: ${{ secrets.BASE_URI }} 
+          cx_client_id: ${{ secrets.CLIENT_ID }}
+          cx_client_secret: ${{ secrets.SECRET }}
